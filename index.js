@@ -8,7 +8,6 @@ function createSlides(slides) {
 	slides.map(slide => {
 		const slideDiv = document.createElement('div')
 		slideDiv.className = 'slide'
-		document.body.appendChild(slideDiv)
 		slide.forEach(line => {
 			const lineDiv = document.createElement('div')
 			lineDiv.className = 'line'
@@ -40,7 +39,8 @@ function createSlides(slides) {
 					lineDiv.appendChild(node)
 				}
 			}
-			slideDiv.appendChild(lineDiv)
+      slideDiv.appendChild(lineDiv)
+      document.body.appendChild(slideDiv)
 		})
 	})
 }
@@ -65,21 +65,20 @@ function startPresentation() {
 }
 
 function initSlide() {
-	if (!showSlide(parseInt(location.hash.slice(1)))) showSlide(0)
+  if (!showSlide(parseInt(location.hash.slice(1)))) 
+    showSlide(0)
 	pushState()
 }
 
 function showSlide(i) {
-		const slide = document.querySelectorAll('.slide')[i]
-		if (slide) {
-			slideIndex = i
-			const curr = current()
-			if (curr) curr.classList.toggle('current')
-			slide.classList.toggle('current')
-			adjustSlide()
-			return true
-		}
-		return false
+  const slide = document.querySelectorAll('.slide')[i]
+  if (!slide) return 
+  slideIndex = i
+  const curr = current()
+  if (curr) curr.classList.toggle('current')
+  slide.classList.toggle('current')
+  adjustSlide()
+  return true
 }
 
 function current() {
@@ -94,14 +93,11 @@ function nextSlide() {
 		return
 	}
 	const next = curr.nextElementSibling
-	//console.log(next)
+	// console.log(next)
 	if (next) {
-		++slideIndex
-		next.classList.toggle('current')
-		curr.classList.toggle('current')
+    showSlide(++slideIndex)
+    pushState()
 	}
-	pushState()
-	adjustSlide()
 }
 
 function prevSlide() {
@@ -109,12 +105,9 @@ function prevSlide() {
 	const prev = curr.previousElementSibling
 	//console.log(prev)
 	if (prev) {
-		--slideIndex
-		curr.classList.toggle('current')
-		prev.classList.toggle('current')
+    showSlide(--slideIndex)
+  	pushState()
 	}
-	pushState()
-	adjustSlide()
 }
 
 let slideIndex
